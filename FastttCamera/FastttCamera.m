@@ -45,52 +45,62 @@
 - (instancetype)init
 {
     if ((self = [super init])) {
-        
-        [self _setupCaptureSession];
-        
-        _handlesTapFocus = YES;
-        _showsFocusView = YES;
-        _cropsImageToVisibleAspectRatio = YES;
-        _scalesImage = YES;
-        _maxScaledDimension = 0.f;
-        _normalizesImageOrientations = YES;
-        _returnsRotatedPreview = YES;
-        _interfaceRotatesWithOrientation = YES;
-        _fixedInterfaceOrientation = UIDeviceOrientationPortrait;
-        _cameraDevice = FastttCameraDeviceRear;
-        _cameraFlashMode = FastttCameraFlashModeOff;
-        _cameraTorchMode = FastttCameraTorchModeOff;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationWillEnterForeground:)
-                                                     name:UIApplicationWillEnterForegroundNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationDidBecomeActive:)
-                                                     name:UIApplicationDidBecomeActiveNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationWillResignActive:)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationDidEnterBackground:)
-                                                     name:UIApplicationDidEnterBackgroundNotification
-                                                   object:nil];
+        [self _setup];
     }
     
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [self _setup];
+}
+
+- (void)_setup
+{
+    [self _setupCaptureSession];
+
+    _handlesTapFocus = YES;
+    _showsFocusView = YES;
+    _cropsImageToVisibleAspectRatio = YES;
+    _scalesImage = YES;
+    _maxScaledDimension = 0.f;
+    _normalizesImageOrientations = YES;
+    _returnsRotatedPreview = YES;
+    _interfaceRotatesWithOrientation = YES;
+    _fixedInterfaceOrientation = UIDeviceOrientationPortrait;
+    _cameraDevice = FastttCameraDeviceRear;
+    _cameraFlashMode = FastttCameraFlashModeOff;
+    _cameraTorchMode = FastttCameraTorchModeOff;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillEnterForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillResignActive:)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidEnterBackground:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+
+}
+
 - (void)dealloc
 {
     _fastFocus = nil;
-    
+
     [self _teardownCaptureSession];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
